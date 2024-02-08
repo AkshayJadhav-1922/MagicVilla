@@ -2,7 +2,7 @@
 
 namespace WebApplication1.Data
 {
-    public static class VillaStore
+    public class VillaStore
     {
         public static List<VillaDTO> villaList = new List<VillaDTO>()
             {
