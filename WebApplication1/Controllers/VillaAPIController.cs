@@ -19,7 +19,7 @@ namespace WebApplication1.Controllers
 
         [HttpGet("id:int")]
         //produesResponse basically removed 'undocumented' tag from endpoint in swager documentation
-        [ProducesResponseType(StatusCodes.Status200OK]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VillaDTO))]
