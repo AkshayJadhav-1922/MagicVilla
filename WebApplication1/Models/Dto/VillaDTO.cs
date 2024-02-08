@@ -9,5 +9,7 @@ namespace WebApplication1.Models.Dto
         [Required]
         [MaxLength(20)]
         public string Name { get; set; }
+        public int Occupancy { get; set; }
+        public int Sqft { get; set; }
     }
 }
