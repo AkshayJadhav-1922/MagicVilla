@@ -42,6 +42,11 @@ namespace WebApplication1.Controllers
             //This is either way of doing validations, if you don't want it using APIController
             //if(!ModelState.IsValid)
             //    return BadRequest(ModelState);
+            if(VillaStore.villaList.FirstOrDefault(u=> u.Name.ToLower() == villaDTO.Name.ToLower())!=null)
+            {
+                ModelState.AddModelError("Custome Error","Vill Name already exist");
+                return BadRequest(ModelState);
+            }
 
             if(villaDTO == null)
                 return BadRequest(villaDTO);
