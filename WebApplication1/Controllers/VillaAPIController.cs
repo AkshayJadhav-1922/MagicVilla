@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Data;
 using WebApplication1.Models;
 using WebApplication1.Models.Dto;
 
@@ -12,11 +13,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IEnumerable<VillaDTO> GetVillas()
         {
-            return new List<VillaDTO>()
-            {
-                new VillaDTO() {Id=1 , Name="Pool Villa"},
-                new VillaDTO() {Id=2 , Name="Beach Villa"}
-            };
+            return VillaStore.villaList;
         }
     }
 }
