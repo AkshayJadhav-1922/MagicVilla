@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
             return Ok(VillaStore.villaList);
         }
 
-        [HttpGet("id:int")]
+        [HttpGet("{id:int}", Name = "GetVilla")]
         //produesResponse basically removed 'undocumented' tag from endpoint in swager documentation
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -34,7 +34,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<VillaDTO> CreateVill([FromBody]VillaDTO villaDTO)
@@ -46,7 +46,8 @@ namespace WebApplication1.Controllers
             villaDTO.Id = VillaStore.villaList.OrderByDescending(u=> u.Id).FirstOrDefault().Id + 1;
             VillaStore.villaList.Add(villaDTO);
 
-            return Ok(villaDTO);
+            //will give 201 response
+            return CreatedAtRoute("GetVilla", new { id= villaDTO.Id } ,villaDTO);
         }
     }
 }
