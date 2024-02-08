@@ -60,5 +60,24 @@ namespace WebApplication1.Controllers
             //will give 201 response
             return CreatedAtRoute("GetVilla", new { id= villaDTO.Id } ,villaDTO);
         }
+
+        [HttpDelete("{id:int}",Name ="DeleteVilla")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult DeleteVilla([FromBody]int id)
+        {
+            if (id == 0)
+                return BadRequest();
+            
+            var VillToBeDeleted = VillaStore.villaList.FirstOrDefault(v => v.Id == id);
+            if (VillToBeDeleted == null)
+            {
+                ModelState.AddModelError("Error", "Vill do not exist");
+                return NotFound(ModelState);
+            }
+            VillaStore.villaList.Remove(VillToBeDeleted);
+            return NoContent();
+        }
     }
 }
