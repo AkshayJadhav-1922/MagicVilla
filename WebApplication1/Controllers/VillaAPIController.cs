@@ -16,7 +16,7 @@ namespace WebApplication1.Controllers
             return Ok(VillaStore.villaList);
         }
 
-        [HttpGet("id")]
+        [HttpGet("id:int")]
         public ActionResult<VillaDTO> GetVilla(int id)
         {
             if (id == 0)
