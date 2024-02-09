@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Data;
 using WebApplication1.Models;
 using WebApplication1.Models.Dto;
@@ -97,6 +98,22 @@ namespace WebApplication1.Controllers
             villaToUpdate.Sqft = villaDTO.Sqft;
             villaToUpdate.Name = villaDTO.Name;
 
+            return NoContent();
+        }
+
+        [HttpPatch("{id:int}", Name ="PatchVilla")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public ActionResult PatchVill(int id, JsonPatchDocument<VillaDTO> villDto)
+        {
+            if(id==0 || villDto == null)
+                return BadRequest();
+
+            var VillToPatch = VillaStore.villaList.FirstOrDefault(u=> u.Id == id);
+            if (VillToPatch == null)
+                return BadRequest();
+
+            villDto.ApplyTo(VillToPatch);
             return NoContent();
         }
     }
