@@ -11,10 +11,17 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class VillaAPIController : ControllerBase
     {
+        private readonly ILogger<VillaDTO> _logger;
+        public VillaAPIController(ILogger<VillaDTO> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
+            _logger.LogInformation("Getting all the villas");
             return Ok(VillaStore.villaList);
         }
 

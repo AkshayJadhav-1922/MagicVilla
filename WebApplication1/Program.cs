@@ -1,6 +1,15 @@
+//using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//To use serilog we have to install two packages - serilog and file
+//Log.Logger = new LoggerConfiguration().MinimumLevel.Debug()
+//    .WriteTo.File("log/villaLogs.text", rollingInterval: RollingInterval.Hour).
+//    CreateLogger();
+
+//builder.WebHost.UseSerilog();
 
 builder.Services.AddControllers(option =>
 {
