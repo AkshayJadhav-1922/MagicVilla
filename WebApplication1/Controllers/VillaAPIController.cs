@@ -11,17 +11,15 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class VillaAPIController : ControllerBase
     {
-        private readonly ILogger<VillaDTO> _logger;
-        public VillaAPIController(ILogger<VillaDTO> logger)
+       
+        public VillaAPIController()
         {
-            _logger = logger;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
-            _logger.LogInformation("Getting all the villas");
             return Ok(VillaStore.villaList);
         }
 
@@ -73,7 +71,7 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult DeleteVilla([FromBody] int id)
+        public IActionResult DeleteVilla(int id)
         {
             if (id == 0)
                 return BadRequest();
