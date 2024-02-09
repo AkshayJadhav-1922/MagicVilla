@@ -1,5 +1,8 @@
 //using Serilog;
 
+using Microsoft.EntityFrameworkCore;
+using WebApplication1.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,7 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 //    CreateLogger();
 
 //builder.WebHost.UseSerilog();
-
+builder.Services.AddDbContext<ApplicationDbContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
+});
 builder.Services.AddControllers().AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
