@@ -1,6 +1,8 @@
 //using Serilog;
 
 using MagicVilla_VillaAPI;
+using MagicVilla_VillaAPI.Repository;
+using MagicVilla_VillaAPI.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 
@@ -18,6 +20,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
+builder.Services.AddScoped<IVillaRepository, VillaRepository>();
 builder.Services.AddControllers().AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
