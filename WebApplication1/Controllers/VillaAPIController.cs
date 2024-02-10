@@ -47,7 +47,7 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<VillaDTO> CreateVill([FromBody] VillaDTO villaDTO)
+        public ActionResult<VillaDTO> CreateVill([FromBody] VillaCreateDTO villaDTO)
         {
             //This is either way of doing validations, if you don't want it using APIController
             //if(!ModelState.IsValid)
@@ -61,8 +61,6 @@ namespace WebApplication1.Controllers
             if (villaDTO == null)
                 return BadRequest(villaDTO);
 
-            if (villaDTO.Id > 0)
-                return StatusCode(StatusCodes.Status500InternalServerError);
 
             Villa model = new()
             {
@@ -81,7 +79,7 @@ namespace WebApplication1.Controllers
             _db.SaveChanges();
 
             //will give 201 response
-            return CreatedAtRoute("GetVilla", new { id = villaDTO.Id }, villaDTO);
+            return CreatedAtRoute("GetVilla", new { id = model.Id }, villaDTO);
         }
 
         [HttpDelete("{id:int}", Name = "DeleteVilla")]
@@ -109,7 +107,7 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult UpdateVill(int id, [FromBody] VillaDTO villaDTO)
+        public IActionResult UpdateVill(int id, [FromBody] VillaUpdateDTO villaDTO)
         {
             if (id == 0 || id != villaDTO.Id)
                 return BadRequest();
@@ -140,7 +138,7 @@ namespace WebApplication1.Controllers
         [HttpPatch("{id:int}", Name ="PatchVilla")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public ActionResult PatchVill(int id, JsonPatchDocument<VillaDTO> villDto)
+        public ActionResult PatchVill(int id, JsonPatchDocument<VillaUpdateDTO> villDto)
         {
             if(id==0 || villDto == null)
                 return BadRequest();
@@ -149,7 +147,7 @@ namespace WebApplication1.Controllers
             if (VillToPatch == null)
                 return BadRequest();
 
-            VillaDTO model = new()
+            VillaUpdateDTO model = new()
             {
                 Amenity = VillToPatch.Amenity,
                 Details = VillToPatch.Details,
