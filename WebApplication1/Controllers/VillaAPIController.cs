@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MagicVilla_VillaAPI.Repository.IRepository;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +14,14 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class VillaAPIController : ControllerBase
     {
-        private readonly ApplicationDbContext _db;
+        //private readonly ApplicationDbContext _db;
+        private readonly IVillaRepository _vill;
         private readonly IMapper _mapper;
-        public VillaAPIController(ApplicationDbContext db, IMapper mapper)
+        public VillaAPIController(IVillaRepository vill, IMapper mapper)
         {
 
-            _db = db;
+            //_db = db;
+            _vill = vill;
             _mapper = mapper;
         }
 
@@ -26,7 +29,7 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<VillaDTO>>> GetVillas()
         {
-            IEnumerable<Villa> listofVillas = await _db.Villas.ToListAsync(); 
+            IEnumerable<Villa> listofVillas = await _vill.GetAllAsync(); 
             return Ok(_mapper.Map<List<VillaDTO>>(listofVillas));
         }
 
@@ -40,7 +43,7 @@ namespace WebApplication1.Controllers
         {
             if (id == 0)
                 return BadRequest();
-            var villa = await _db.Villas.FirstOrDefaultAsync(u => u.Id == id);
+            var villa = await _vill.GetAsync(u => u.Id == id);
             if (villa == null)
                 return NotFound();
             return Ok(villa);
@@ -55,7 +58,7 @@ namespace WebApplication1.Controllers
             //This is either way of doing validations, if you don't want it using APIController
             //if(!ModelState.IsValid)
             //    return BadRequest(ModelState);
-            if (await _db.Villas.FirstOrDefaultAsync(u => u.Name.ToLower() == villaDTO.Name.ToLower()) != null)
+            if (await _vill.GetAsync(u => u.Name.ToLower() == villaDTO.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("Custome Error", "Vill Name already exist");
                 return BadRequest(ModelState);
@@ -67,8 +70,7 @@ namespace WebApplication1.Controllers
             Villa model = _mapper.Map<Villa>(villaDTO);
             
             
-            await _db.Villas.AddAsync(model);
-            await _db.SaveChangesAsync();
+            await _vill.CreateAsync(model);
 
             //will give 201 response
             return CreatedAtRoute("GetVilla", new { id = model.Id }, model);
@@ -83,14 +85,13 @@ namespace WebApplication1.Controllers
             if (id == 0)
                 return BadRequest();
 
-            var VillToBeDeleted = await _db.Villas.FirstOrDefaultAsync(v => v.Id == id);
+            var VillToBeDeleted = await _vill.GetAsync(v => v.Id == id);
             if (VillToBeDeleted == null)
             {
                 ModelState.AddModelError("Error", "Vill do not exist");
                 return NotFound(ModelState);
             }
-            _db.Villas.Remove(VillToBeDeleted);
-            await _db.SaveChangesAsync();
+            await _vill.RemoveAsync(VillToBeDeleted);
 
             return NoContent();
         }
@@ -101,17 +102,16 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateVill(int id, [FromBody] VillaUpdateDTO villaDTO)
         {
-            if (id == 0 || id != villaDTO.Id)
+            if (villaDTO == null || id != villaDTO.Id)
                 return BadRequest();
 
-            var villaToUpdate = await _db.Villas.FirstOrDefaultAsync(u => u.Id == id);
-            if (villaToUpdate == null)
+            var VillToUpdate = await _vill.GetAsync(u => u.Id == id, false);
+            if (VillToUpdate == null)
                 return NotFound();
 
             Villa model = _mapper.Map<Villa>(villaDTO);
             
-            _db.Villas.Update(model);
-            await _db.SaveChangesAsync();
+            await _vill.UpdateAsync(model);
 
             return NoContent();
         }
@@ -124,7 +124,7 @@ namespace WebApplication1.Controllers
             if(id==0 || villDto == null)
                 return BadRequest();
 
-            var VillToPatch = await _db.Villas.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+            var VillToPatch = await _vill.GetAsync(u => u.Id == id, false);
             if (VillToPatch == null)
                 return BadRequest();
 
@@ -135,8 +135,7 @@ namespace WebApplication1.Controllers
                 return BadRequest(ModelState);
 
             Villa model1 = _mapper.Map<Villa>(model);
-            _db.Villas.Update(model1);
-            await _db.SaveChangesAsync();
+            await _vill.UpdateAsync(model1);
 
             return NoContent();
         }
