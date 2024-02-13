@@ -76,7 +76,7 @@ namespace MagicVilla_Web.Services
                 var dto = new APIResponse
                 {
                     ErrorMessages = new List<string> { Convert.ToString(ex.Message) },
-                    ISuccess = false
+                    IsSuccess = false
                 };
                 var res = JsonConvert.SerializeObject(dto);
                 var APIResponse = JsonConvert.DeserializeObject<T>(res);
