@@ -46,5 +46,60 @@ namespace MagicVilla_Web.Controllers
             }
             return View(model);
         }
+
+        public async Task<IActionResult> UpdateVilla(int villId)
+        {
+            if(ModelState.IsValid)
+            {
+                var response = await _villaService.GetAsync<APIResponse>(villId);
+                if(response !=null && response.IsSuccess)
+                {
+                    VillaDTO villatoUpdate = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(response.Result));
+                    return View(_mapper.Map<VillaUpdateDTO>(villatoUpdate));
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateVilla(VillaUpdateDTO model)
+        {
+            if(ModelState.IsValid)
+            {
+                var response = await _villaService.UpdateAsync<APIResponse>(model);
+                if(response!= null && response.IsSuccess)
+                {
+                    return RedirectToAction(nameof(IndexVilla));
+                }
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> DeleteVilla(int villId)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _villaService.GetAsync<APIResponse>(villId);
+                if (response != null && response.IsSuccess)
+                {
+                    VillaDTO villatoDelete = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(response.Result));
+                    return View(villatoDelete);
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteVilla(VillaDTO model)
+        {
+            var response = await _villaService.DeleteAsync<APIResponse>(model.Id);
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(IndexVilla));
+            }
+            return View(model);
+        }
     }
 }
