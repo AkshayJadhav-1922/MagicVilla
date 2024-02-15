@@ -46,7 +46,7 @@ namespace MagicVilla_Web.Controllers
                         Value = i.Id.ToString()
                     });
             }
-            return View();
+            return View(villaNumberCreateVM);
         }
 
         [HttpPost]
