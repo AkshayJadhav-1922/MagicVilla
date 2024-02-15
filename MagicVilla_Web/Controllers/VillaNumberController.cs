@@ -80,15 +80,15 @@ namespace MagicVilla_Web.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> UpdateVillaNumber(int villaNum)
+        public async Task<IActionResult> UpdateVillaNumber(int villaNo)
         {
             if (ModelState.IsValid)
             {
                 VillaNumberUpdateVM villaNumberUpdateVM = new();
-                var response = await _villaNumberService.GetAsync<APIResponse>(villaNum);
+                var response = await _villaNumberService.GetAsync<APIResponse>(villaNo);
                 if (response != null && response.IsSuccess)
                 {
-                    VillaDTO villatoUpdate = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(response.Result));
+                    VillaNumberDTO villatoUpdate = JsonConvert.DeserializeObject<VillaNumberDTO>(Convert.ToString(response.Result));
                     villaNumberUpdateVM.villaNumber = _mapper.Map<VillaNumberUpdateDTO>(villatoUpdate);
                 }
                 var res = await _villaService.GetAllAsycn<APIResponse>();
@@ -137,12 +137,12 @@ namespace MagicVilla_Web.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> DeleteVillaNumber(int villaNum)
+        public async Task<IActionResult> DeleteVillaNumber(int villaNo)
         {
             if (ModelState.IsValid)
             {
                 VillaNumberDeleteVM villaNumberDeleteVM = new();
-                var response = await _villaNumberService.GetAsync<APIResponse>(villaNum);
+                var response = await _villaNumberService.GetAsync<APIResponse>(villaNo);
                 if (response != null && response.IsSuccess)
                 {
                     villaNumberDeleteVM.villaNumber = JsonConvert.DeserializeObject<VillaNumberDTO>(Convert.ToString(response.Result));
@@ -165,9 +165,9 @@ namespace MagicVilla_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteVillaNumer(VillaNumberDeleteVM model)
+        public async Task<IActionResult> DeleteVillaNumber(VillaNumberDeleteVM model)
         {
-            var response = await _villaService.DeleteAsync<APIResponse>(model.villaNumber.VillNo);
+            var response = await _villaNumberService.DeleteAsync<APIResponse>(model.villaNumber.VillNo);
             if (response != null && response.IsSuccess)
             {
                 return RedirectToAction(nameof(IndexVillaNumber));
