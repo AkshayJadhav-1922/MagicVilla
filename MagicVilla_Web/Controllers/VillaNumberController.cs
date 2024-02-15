@@ -60,6 +60,21 @@ namespace MagicVilla_Web.Controllers
                 {
                     return RedirectToAction(nameof(IndexVillaNumber));
                 }
+                else
+                {
+                    ModelState.AddModelError("ErrorMessages", response.ErrorMessages.FirstOrDefault());
+                }
+            }
+            var res = await _villaService.GetAllAsycn<APIResponse>();
+
+            if (res != null && res.IsSuccess)
+            {
+                model.villaList = JsonConvert.DeserializeObject<List<VillaDTO>>
+                    (Convert.ToString(res.Result)).Select(i => new SelectListItem
+                    {
+                        Text = i.Name,
+                        Value = i.Id.ToString()
+                    });
             }
             return View(model);
         }

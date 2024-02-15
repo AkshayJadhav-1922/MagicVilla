@@ -3,11 +3,11 @@
 <form asp-action="CreateVillaNumber">
     <br />
     <div class="container border p-3">
-        <h1 class="text-primary">Create Villa</h1>
+        <h2 class="text-primary">Create Villa</h2>
         <hr />
 
         <div class="row">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="col-2">
                 <label asp-for="villaNumber.VillNo" class="control-lable pt-2" style="font-size:20px;"></label>
             </div>
