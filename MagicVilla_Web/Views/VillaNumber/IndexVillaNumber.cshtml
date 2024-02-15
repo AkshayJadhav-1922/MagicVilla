@@ -24,7 +24,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td></td>
+                    <td>@item.Villa.Name</td>
                     <td>@item.VillNo</td>
                     <td>
                         <a asp-controller="VillaNumber" asp-action="UpdateVillaNumber" asp-route-VillNo="@item.VillNo" class="btn btn-success"><i class="bi bi-pencil-square"></i></a>

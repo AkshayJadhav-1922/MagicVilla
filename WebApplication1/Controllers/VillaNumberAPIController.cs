@@ -39,7 +39,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                IEnumerable<VillaNumber> listofVillaNumbers = await _villNumber.GetAllAsync();
+                IEnumerable<VillaNumber> listofVillaNumbers = await _villNumber.GetAllAsync(includeProperty: "Villa");
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = _mapper.Map<List<VillaNumberDTO>>(listofVillaNumbers);
                 return Ok(_response);
@@ -71,7 +71,7 @@ namespace WebApplication1.Controllers
                     _response.ISuccess = false;
                     return BadRequest(_response);
                 }
-                var villaNumber = await _villNumber.GetAsync(u => u.VillNo == id);
+                var villaNumber = await _villNumber.GetAsync(u => u.VillNo == id, includeProperty: "Villa");
                 if (villaNumber == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
