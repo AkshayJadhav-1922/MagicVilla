@@ -109,7 +109,7 @@ namespace MagicVilla_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateVilla(VillaNumberUpdateVM model)
+        public async Task<IActionResult> UpdateVillaNumber(VillaNumberUpdateVM model)
         {
             if (ModelState.IsValid)
             {
@@ -137,7 +137,7 @@ namespace MagicVilla_Web.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> DeleteVilla(int villaNum)
+        public async Task<IActionResult> DeleteVillaNumber(int villaNum)
         {
             if (ModelState.IsValid)
             {
@@ -165,7 +165,7 @@ namespace MagicVilla_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteVilla(VillaNumberDeleteVM model)
+        public async Task<IActionResult> DeleteVillaNumer(VillaNumberDeleteVM model)
         {
             var response = await _villaService.DeleteAsync<APIResponse>(model.villaNumber.VillNo);
             if (response != null && response.IsSuccess)
