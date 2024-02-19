@@ -1,6 +1,7 @@
 ﻿using MagicVilla_VillaAPI.Models;
 using MagicVilla_VillaAPI.Models.Dto;
 using MagicVilla_VillaAPI.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 
 namespace MagicVilla_VillaAPI.Repository
@@ -8,9 +9,12 @@ namespace MagicVilla_VillaAPI.Repository
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _db;
-        public UserRepository(ApplicationDbContext db)
+        private string secretKey;
+        public UserRepository(ApplicationDbContext db, IConfiguration configuration)
         {
             _db = db;
+            secretKey = configuration.GetValue<string>("ApiSetting:Secret");
+
         }
         public bool IsUniqueUser(string username)
         {
@@ -24,7 +28,17 @@ namespace MagicVilla_VillaAPI.Repository
 
         public Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
-            throw new NotImplementedException();
+            var user = _db.LocalUsers.FirstOrDefaultAsync(u => u.UserName.ToLower() == loginRequestDTO.UserName.ToLower() 
+            && u.Password.ToLower()== loginRequestDTO.Password.ToLower());
+            
+            if (user == null)
+            {
+                return null;
+            }
+
+            //generating JWT tocken
+
+
         }
 
         public async Task<LocalUser> Register(RegitrationRequestDTO regitrationRequestDTO)
