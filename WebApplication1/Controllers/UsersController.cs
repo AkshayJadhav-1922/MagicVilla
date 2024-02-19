@@ -25,7 +25,7 @@ namespace MagicVilla_VillaAPI.Controllers
             var loginResponse = await _userRepository.Login(model);
             if(loginResponse.User == null || loginResponse.Tocken == "")
             {
-                _response.ErrorMessages.Add("User Name or password is incorrect");
+                _response.ErrorMessages = new List<string>() { "User Name or password is incorrect" };
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.ISuccess = false;
                 return BadRequest(_response);
@@ -41,9 +41,9 @@ namespace MagicVilla_VillaAPI.Controllers
         public async Task<IActionResult> Register([FromBody] RegitrationRequestDTO model)
         {
             var isUserNameUnique = _userRepository.IsUniqueUser(model.UserName);
-            if (isUserNameUnique)
+            if (!isUserNameUnique)
             {
-                _response.ErrorMessages.Add("Enter Unique user name, as entered one already exist in system");
+                _response.ErrorMessages= new List<string>() { "Enter Unique user name, as entered one already exist in system" };
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.ISuccess = false;
                 return BadRequest(_response);

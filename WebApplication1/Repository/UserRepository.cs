@@ -22,11 +22,20 @@ namespace MagicVilla_VillaAPI.Repository
         }
         public bool IsUniqueUser(string username)
         {
-            var user = _db.LocalUsers.FirstOrDefault(u => u.UserName == username);
-            if (user == null)
+            try
             {
-                return true;
+                var user = _db.LocalUsers.FirstOrDefault(u => u.UserName == username);
+                if (user == null)
+                {
+                    return true;
+                }
             }
+            catch(Exception ex)
+            {
+                throw new Exception(null);
+            }
+            
+            
             return false;
         }
 
