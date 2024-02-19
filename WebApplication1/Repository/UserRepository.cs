@@ -37,7 +37,10 @@ namespace MagicVilla_VillaAPI.Repository
 
             if (user == null)
             {
-                return null;
+                return new LoginResponseDTO(){
+                    User = null,
+                    Tocken ="" 
+                };
             }
 
             //if user was found, generate JWT Tocken
