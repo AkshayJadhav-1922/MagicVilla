@@ -8,6 +8,7 @@ using WebApplication1.Data;
 using WebApplication1.Models;
 using WebApplication1.Models.Dto;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication1.Controllers
 {
@@ -54,6 +55,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetVilla")]
+        [Authorize(Roles ="admin")]
         //produesResponse basically removed 'undocumented' tag from endpoint in swager documentation
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
