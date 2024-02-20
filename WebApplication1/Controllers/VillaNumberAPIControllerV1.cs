@@ -17,15 +17,14 @@ namespace WebApplication1.Controllers
     [Route("api/v{version:apiVersion}/VillaNumberAPI")]
     [ApiController]
     [ApiVersion("1.0")]
-    [ApiVersion("2.0")]
-    public class VillaAPINumberController : ControllerBase
+    public class VillaAPINumberControllerV1 : ControllerBase
     {
         //private readonly ApplicationDbContext _db;
         private readonly IVillaNumberRepository _villNumber;
         private readonly IVillaRepository _villa;
         private readonly IMapper _mapper;
         protected APIResponse _response;
-        public VillaAPINumberController(IVillaNumberRepository villNumber, IMapper mapper, IVillaRepository villa)
+        public VillaAPINumberControllerV1(IVillaNumberRepository villNumber, IMapper mapper, IVillaRepository villa)
         {
 
             //_db = db;
@@ -36,7 +35,6 @@ namespace WebApplication1.Controllers
 
         }
 
-        [MapToApiVersion("1.0")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -63,12 +61,6 @@ namespace WebApplication1.Controllers
 
         }
 
-        [MapToApiVersion("2.0")]
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "string1", "string2"};
-        }
 
         [HttpGet("{id:int}", Name = "GetVillaNumber")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
