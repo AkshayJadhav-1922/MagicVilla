@@ -86,7 +86,7 @@ namespace MagicVilla_VillaAPI.Repository
                 UserName = regitrationRequestDTO.UserName,
                 Password = regitrationRequestDTO.Password,
                 Name = regitrationRequestDTO.Name,
-                Role = regitrationRequestDTO.Role
+                Role = !string.IsNullOrEmpty(regitrationRequestDTO.Role) ? "customer": regitrationRequestDTO.Role
             };
 
             await _db.LocalUsers.AddAsync(user);
