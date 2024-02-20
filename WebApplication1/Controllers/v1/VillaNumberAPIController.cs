@@ -16,7 +16,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
     //if we are using mvc, it will have Controller instead of Controller base
     [Route("api/v{version:apiVersion}/VillaNumberAPI")]
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("1.0", Deprecated = true)]
     public class VillaAPINumberController : ControllerBase
     {
         //private readonly ApplicationDbContext _db;
