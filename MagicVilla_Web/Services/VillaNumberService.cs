@@ -2,15 +2,16 @@
 using MagicVilla_Utility;
 using MagicVilla_Web.Models;
 using MagicVilla_Web.Models.Dto;
+using MagicVilla_Web.Services.IServices;
 
-namespace MagicVilla_Web.Services.IServices
+namespace MagicVilla_Web.Services
 {
     public class VillaNumberService : BaseService, IVillaNumberService
     {
         private readonly IHttpClientFactory _clientFactory;
         private string villUrl;
 
-        public VillaNumberService(IHttpClientFactory clientFactory, IConfiguration configuration): base(clientFactory)
+        public VillaNumberService(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory)
         {
             _clientFactory = clientFactory;
             villUrl = configuration.GetValue<string>("ServiceUrls:VillaAPI");
@@ -19,7 +20,7 @@ namespace MagicVilla_Web.Services.IServices
         {
             return SendAsync<T>(new APIRequest()
             {
-                ApiType= SD.ApiType.POST,
+                ApiType = SD.ApiType.POST,
                 Data = dto,
                 Url = villUrl + "/api/VillaNumberAPI/"
             });
@@ -30,7 +31,7 @@ namespace MagicVilla_Web.Services.IServices
             return SendAsync<T>(new APIRequest()
             {
                 ApiType = SD.ApiType.DELETE,
-                Url = villUrl + "/api/VillaNumberAPI/"+ id
+                Url = villUrl + "/api/VillaNumberAPI/" + id
             });
         }
 

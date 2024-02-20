@@ -3,8 +3,10 @@ using MagicVilla_Web.Models;
 using MagicVilla_Web.Models.Dto;
 using MagicVilla_Web.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace MagicVilla_Web.Controllers
 {
@@ -13,7 +15,7 @@ namespace MagicVilla_Web.Controllers
         private readonly IAuthService _authService;
         public AuthController(IAuthService authService)
         {
-            authService = _authService;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -31,6 +33,12 @@ namespace MagicVilla_Web.Controllers
             if(response!= null && response.IsSuccess)
             {
                 LoginResponseDTO result = JsonConvert.DeserializeObject<LoginResponseDTO>(Convert.ToString(response.Result));
+                var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                identity.AddClaim(new Claim(ClaimTypes.Name, result.User.Name));
+                identity.AddClaim(new Claim(ClaimTypes.Role, result.User.Role));
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
                 HttpContext.Session.SetString(SD.SessionTocken, result.Tocken);
                 return RedirectToAction("Index", "Home");
             }
