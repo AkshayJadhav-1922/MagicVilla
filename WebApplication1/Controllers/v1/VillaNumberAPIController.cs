@@ -11,20 +11,20 @@ using System.Net;
 using MagicVilla_VillaAPI.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 
-namespace WebApplication1.Controllers
+namespace MagicVilla_VillaAPI.Controllers.v1
 {
     //if we are using mvc, it will have Controller instead of Controller base
     [Route("api/v{version:apiVersion}/VillaNumberAPI")]
     [ApiController]
     [ApiVersion("1.0")]
-    public class VillaAPINumberControllerV1 : ControllerBase
+    public class VillaAPINumberController : ControllerBase
     {
         //private readonly ApplicationDbContext _db;
         private readonly IVillaNumberRepository _villNumber;
         private readonly IVillaRepository _villa;
         private readonly IMapper _mapper;
         protected APIResponse _response;
-        public VillaAPINumberControllerV1(IVillaNumberRepository villNumber, IMapper mapper, IVillaRepository villa)
+        public VillaAPINumberController(IVillaNumberRepository villNumber, IMapper mapper, IVillaRepository villa)
         {
 
             //_db = db;
@@ -103,7 +103,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -127,7 +127,7 @@ namespace WebApplication1.Controllers
                     return BadRequest(_response);
                 }
 
-                if(await _villa.GetAsync(u=> u.Id == villaNumberCreateDTO.VillId) == null)
+                if (await _villa.GetAsync(u => u.Id == villaNumberCreateDTO.VillId) == null)
                 {
                     _response.ISuccess = false;
                     _response.ErrorMessages = new List<string>()
@@ -227,7 +227,7 @@ namespace WebApplication1.Controllers
                 {
                     _response.ISuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                     return BadRequest(_response);
+                    return BadRequest(_response);
                 }
 
                 if (await _villa.GetAsync(u => u.Id == villaNumberUpdateDTO.VillId) == null)
@@ -268,6 +268,6 @@ namespace WebApplication1.Controllers
             }
         }
 
-        
+
     }
 }
