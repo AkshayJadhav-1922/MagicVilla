@@ -14,6 +14,7 @@ namespace WebApplication1.Data
         public DbSet<Villa> Villas { get; set; }
         public DbSet<VillaNumber> VillaNumbers { get; set; }
         public DbSet<LocalUser> LocalUsers { get; set; }
+        public DbSet<Role> Roles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Villa>().HasData(new Villa
@@ -76,6 +77,8 @@ namespace WebApplication1.Data
                   Amenity = "",
                   CreatedDate = DateTime.Now
               });
+
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 1, RoleName = "admin" }, new Role { Id = 2, RoleName = "customer" });
         }
     }
 }
