@@ -16,6 +16,7 @@ namespace WebApplication1.Controllers
     //if we are using mvc, it will have Controller instead of Controller base
     [Route("api/VillaNumberAPI")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class VillaAPINumberController : ControllerBase
     {
         //private readonly ApplicationDbContext _db;
