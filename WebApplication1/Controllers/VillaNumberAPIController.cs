@@ -14,9 +14,10 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebApplication1.Controllers
 {
     //if we are using mvc, it will have Controller instead of Controller base
-    [Route("api/VillaNumberAPI")]
+    [Route("api/v{version:apiVersion}/VillaNumberAPI")]
     [ApiController]
     [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class VillaAPINumberController : ControllerBase
     {
         //private readonly ApplicationDbContext _db;
@@ -35,6 +36,7 @@ namespace WebApplication1.Controllers
 
         }
 
+        [MapToApiVersion("1.0")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -59,6 +61,13 @@ namespace WebApplication1.Controllers
                 return BadRequest(_response);
             }
 
+        }
+
+        [MapToApiVersion("2.0")]
+        [HttpGet]
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "string1", "string2"};
         }
 
         [HttpGet("{id:int}", Name = "GetVillaNumber")]
