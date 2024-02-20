@@ -5,6 +5,8 @@ using MagicVilla_Web.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Security.Claims;
 
@@ -13,9 +15,11 @@ namespace MagicVilla_Web.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private readonly IRolesService _rolesService;
+        public AuthController(IAuthService authService, IRolesService rolesService)
         {
             _authService = authService;
+            _rolesService = rolesService;
         }
 
         [HttpGet]
@@ -51,9 +55,24 @@ namespace MagicVilla_Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register() 
-        { 
-            return View();
+        public async Task<IActionResult> Register() 
+        {
+            APIResponse result = await _rolesService.GetAllRoles<APIResponse>();
+            if(result!=null && result.IsSuccess) 
+            {
+                IEnumerable<RolesDTO> roles = JsonConvert.DeserializeObject<IEnumerable<RolesDTO>>(Convert.ToString(result.Result));
+                ViewBag.RolesList = roles.Select(i => i.RoleName).Select(x => new SelectListItem
+                {
+                    Text = x,
+                    Value = x
+                });
+                return View();
+            }
+            else
+            {
+                ModelState.AddModelError("custome error", "Something went wrong while fetching roles");
+                return View(ModelState);
+            }
         }
 
         [HttpPost]
