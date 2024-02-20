@@ -13,8 +13,9 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebApplication1.Controllers
 {
     //if we are using mvc, it will have Controller instead of Controller base
-    [Route("api/VillaAPI")]
+    [Route("api/v{version:apiVersion}/VillaAPI")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class VillaAPIController : ControllerBase
     {
         //private readonly ApplicationDbContext _db;
