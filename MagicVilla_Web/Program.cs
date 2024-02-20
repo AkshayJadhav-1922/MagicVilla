@@ -18,6 +18,9 @@ builder.Services.AddScoped<IVillaNumberService, VillaNumberService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+builder.Services.AddHttpClient<IRolesService, RolesService>();
+builder.Services.AddScoped<IRolesService, RolesService>();
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddDistributedMemoryCache();

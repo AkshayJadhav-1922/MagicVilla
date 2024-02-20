@@ -7,6 +7,7 @@ namespace MagicVilla_VillaAPI.Controllers
 {
     [ApiController]
     [Route("api/v{version:apiVersion}/Roles")]
+    [ApiVersionNeutral]
     public class RolesController : Controller
     {
         private readonly IRolesRepository _rolesRepository;
