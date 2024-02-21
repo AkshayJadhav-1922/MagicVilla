@@ -38,18 +38,22 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name ="filterOccupancy")]int? occupancy)
+        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name ="filterOccupancy")]int? occupancy, [FromQuery] string? search, int PageSize = 0, int PageNumber = 1)
         {
             try
             {
                 IEnumerable<Villa> listofVillas;
                 if(occupancy > 0)
                 {
-                    listofVillas = await _vill.GetAllAsync(u => u.Occupancy == occupancy);
+                    listofVillas = await _vill.GetAllAsync(u => u.Occupancy == occupancy, pageSize: PageSize, pageNumber: PageNumber);
                 }
                 else
                 {
-                    listofVillas = await _vill.GetAllAsync();
+                    listofVillas = await _vill.GetAllAsync(u => u.Occupancy == occupancy, pageSize: PageSize, pageNumber: PageNumber);
+                }
+                if (!string.IsNullOrEmpty(search))
+                {
+                    listofVillas = listofVillas.Where(u => u.Name.ToLower().Contains(search));
                 }
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = _mapper.Map<List<VillaDTO>>(listofVillas);
