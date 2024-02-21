@@ -9,6 +9,7 @@ using WebApplication1.Models;
 using WebApplication1.Models.Dto;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace WebApplication1.Controllers
 {
@@ -55,6 +56,9 @@ namespace WebApplication1.Controllers
                 {
                     listofVillas = listofVillas.Where(u => u.Name.ToLower().Contains(search));
                 }
+                Pagination pagination = new() { PageNumber = PageNumber, PageSize = PageSize };
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagination));
+
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = _mapper.Map<List<VillaDTO>>(listofVillas);
                 return Ok(_response);
