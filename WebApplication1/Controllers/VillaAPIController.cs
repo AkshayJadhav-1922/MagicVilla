@@ -38,11 +38,19 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<APIResponse>> GetVillas()
+        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name ="filterOccupancy")]int? occupancy)
         {
             try
             {
-                IEnumerable<Villa> listofVillas = await _vill.GetAllAsync();
+                IEnumerable<Villa> listofVillas;
+                if(occupancy > 0)
+                {
+                    listofVillas = await _vill.GetAllAsync(u => u.Occupancy == occupancy);
+                }
+                else
+                {
+                    listofVillas = await _vill.GetAllAsync();
+                }
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = _mapper.Map<List<VillaDTO>>(listofVillas);
                 return Ok(_response);
