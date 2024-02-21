@@ -32,7 +32,8 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(Duration =30)] //this will cash response for 30 seconds
+        [ResponseCache(CacheProfileName ="Default30")]
+        //[ResponseCache(Duration =30)] this will cash response for 30 seconds
         //[ResponseCache(Location =ResponseCacheLocation.None, NoStore = true)] - This will tell, request should not be cashed
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

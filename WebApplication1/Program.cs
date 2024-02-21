@@ -29,7 +29,12 @@ builder.Services.AddScoped<IVillaRepository, VillaRepository>();
 builder.Services.AddScoped<IVillaNumberRepository, VillaNumberRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRolesRepository, RolesRepository>();
-builder.Services.AddControllers().AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
+builder.Services.AddControllers(
+    options =>
+        {
+            options.CacheProfiles.Add("Default30", new CacheProfile() { Duration = 30 });
+        }
+    ).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 builder.Services.AddApiVersioning(options =>
 {
